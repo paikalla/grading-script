@@ -34,7 +34,7 @@ get_opiskelijanumero_by_tunnistenumero <- function(tunnistenumero) {
 #### Aineistot ####
 
 # Moocista tuotu data
-mooc_data <- read_excel("#tilastoMOOC Arvioinnit.xlsx")  %>% replace(is.na(.), 0)
+mooc_data <- read_excel("#tilastoMOOC Arvioinnit.xlsx")
 mooc_data$Opiskelijanumero <- sapply(mooc_data$Tunnistenumero, get_opiskelijanumero_by_tunnistenumero)
 
 # Avoimen Annelta saatu suorituslista; nimetään sarakkeet
@@ -56,13 +56,11 @@ suodatettu_lista_by_sahkoposti[cols] <- lapply(suodatettu_lista_by_sahkoposti[co
 #######
 ## 1 ##
 #######  Tarkista pisterajat osa1/osa2?
-
 suodatettu_lista_by_sahkoposti$Yhteispisteet <- laske_pisteet(suodatettu_lista_by_sahkoposti, cols)
 suodatettu_lista_by_sahkoposti$Arvosana <- laske_arvosana(suodatettu_lista_by_sahkoposti, "Yhteispisteet", pisteraja_5 = 180, pisteraja_4 = 160, pisteraja_3 = 140, pisteraja_2 = 120, pisteraja_1 = 100)
 
 
-### EIVÄT löydy sähköpostiosoitteella mutta löytyvät tunnistenumerolla ###
-##########################################################################
+# NOT found BY sahkoposti -> found only BY opiskelijanumero
 not_found_by_sahkoposti_list <- anti_join(suorituslista, mooc_data, by = "Sähköpostiosoite")
 found_only_by_opiskelijanumero_list <- semi_join(mooc_data, not_found_by_sahkoposti_list, by = "Opiskelijanumero")
 
@@ -70,7 +68,6 @@ cols <- c(8:17)
 
 found_only_by_opiskelijanumero_list[cols] <- lapply(found_only_by_opiskelijanumero_list[cols], gsub, pattern = "-", replacement = 0)
 found_only_by_opiskelijanumero_list[cols] <- lapply(found_only_by_opiskelijanumero_list[cols], as.numeric)
-##########################################################################
 
 
 #######
@@ -106,6 +103,4 @@ write.csv(valmis_paketti, file = "Arvosanat TILASTOMOOC.csv")
 ####### KIRJAA KÄSIN: näillä ei tunnistetietoja!
 
 not_found_by_email_or_opiskelijanro_list <- anti_join(not_found_by_sahkoposti_list, mooc_data, by = "Opiskelijanumero")
-
-
 

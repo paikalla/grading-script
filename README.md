@@ -12,7 +12,7 @@ install.packages("dplyr")
 # set working directory
 setwd("/path/to/the/location/where-my-suorituslista-lies")
 ```
-Further instructions embedded in the script.
+Further instructions embedded in the script in Finnish.
 
-The script matches the course data with the subset of students given by a bureau register. To do that it uses several identification variables (studentID, email or login-studentID). It automatically collects the subset of students, idenfies their course points, grades them and returns an excel-file of registered students and their grades. For quality assurance the script identifies the students from bureau list that did _not_ match the grading data.
+The script matches the course data with the subset of students given by a bureau register (=suorituslista). To do that it uses several identification variables (studentID, email or login-studentID). It automatically collects the subset of students, identifies their course points, grades them. Eventually, it returns an excel-file of registered students and their grades. For quality assurance the script identifies the students from bureau list that did _not_ match the grading data.
 
